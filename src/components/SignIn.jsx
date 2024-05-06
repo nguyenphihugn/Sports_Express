@@ -1,29 +1,25 @@
-import React, { useContext, useState } from "react";
-import { UserContext } from "../context/UserContext";
+import React, { useState, useReducer } from "react";
 import ErrorMessage from "./ErrorMessage";
+import { useNavigate } from "react-router-dom";
+import { AuthData } from "../context/UserContext";
 
 const SignIn = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { login } = AuthData();
+  const [formData, setFormData] = useReducer(
+    (formData, newItem) => {
+      return { ...formData, ...newItem };
+    },
+    { username: "", password: "" }
+  );
   const [errorMessage, setErrorMessage] = useState("");
-  const [, setToken] = useContext(UserContext);
 
   const submitSignIn = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: JSON.stringify(
-        `grant_type=&username=${username}&password=${password}&scope=&client_id=&client_secret=`
-      ),
-    };
-
-    const response = await fetch("/api/token", requestOptions);
-    const data = await response.json();
-
-    if (!response.ok) {
-      setErrorMessage(data.detail);
-    } else {
-      setToken(data.access_token);
+    try {
+      await login(formData.username, formData.password);
+      navigate("/");
+    } catch (error) {
+      setErrorMessage(error);
     }
   };
 
@@ -50,9 +46,9 @@ const SignIn = () => {
                     className="form-control "
                     type="text"
                     placeholder="Enter your username"
-                    value={username}
+                    value={formData.username}
                     maxLength="16"
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => setFormData({ username: e.target.value })}
                     required
                   />
                   <label>Username</label>
@@ -64,8 +60,8 @@ const SignIn = () => {
                     placeholder="Enter your password"
                     minLength="3"
                     maxLength="32"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formData.password}
+                    onChange={(e) => setFormData({ password: e.target.value })}
                     required
                   />
                   <label>Password</label>
