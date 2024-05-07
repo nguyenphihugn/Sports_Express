@@ -17,7 +17,7 @@ const SignIn = () => {
   const submitSignIn = async () => {
     try {
       await login(formData.username, formData.password);
-      navigate("/");
+      navigate("/account");
     } catch (error) {
       setErrorMessage(error);
     }

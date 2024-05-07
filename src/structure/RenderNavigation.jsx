@@ -33,6 +33,7 @@ export const RenderMenu = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-info" data-bs-theme="dark">
       <div className="container-fluid">
+        <div class="navbar-brand">FASHION - BLOGS</div>
         <button
           className="navbar-toggler"
           type="button"
@@ -83,6 +84,19 @@ export const RenderMenu = () => {
               </div>
             )}
           </div>
+          <form className="d-flex" data-bs-theme="light">
+            <input
+              className="form-control me-sm-2"
+              type="search"
+              placeholder="Search"
+            />
+            <button
+              class="btn btn-secondary my-2 my-sm-0 me-sm-5"
+              type="submit"
+            >
+              Search
+            </button>
+          </form>
           {user.isAuthenticated || token ? (
             <div className="d-flex flex-column align-items-center">
               <img

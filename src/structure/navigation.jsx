@@ -1,3 +1,4 @@
+import { Account } from "../components/Account";
 import { Home } from "../components/Home";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
@@ -9,6 +10,13 @@ export const nav = [
     element: <Home />,
     isMenu: true,
     isPrivate: false,
+  },
+  {
+    path: "/account",
+    name: "Account",
+    element: <Account />,
+    isMenu: true,
+    isPrivate: true,
   },
   {
     path: "/signin",
