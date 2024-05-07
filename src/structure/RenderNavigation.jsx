@@ -33,7 +33,7 @@ export const RenderMenu = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-info" data-bs-theme="dark">
       <div className="container-fluid">
-        <div class="navbar-brand">FASHION - BLOGS</div>
+        <div className="navbar-brand">FASHION - BLOGS</div>
         <button
           className="navbar-toggler"
           type="button"
@@ -91,7 +91,7 @@ export const RenderMenu = () => {
               placeholder="Search"
             />
             <button
-              class="btn btn-secondary my-2 my-sm-0 me-sm-5"
+              className="btn btn-secondary my-2 my-sm-0 me-sm-5"
               type="submit"
             >
               Search
