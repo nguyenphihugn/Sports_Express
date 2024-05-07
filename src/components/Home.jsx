@@ -65,15 +65,15 @@ export function Home() {
                         {item.title}
                       </h3>
                       <p className="hover-4-description text-uppercase mb-0 small">
-                        {item.content.length > 50
-                          ? item.content.substring(0, 50) + "..."
-                          : item.content}
-                        <br />
                         {moment(item.create_at).format(
                           "MMMM Do YYYY, h:mm:ss a"
                         )}
                         <br />
                         Created By: {item.owner.username}
+                        <br />
+                        {item.content.length > 50
+                          ? item.content.substring(0, 50) + "..."
+                          : item.content}
                       </p>
                     </div>
                   </div>

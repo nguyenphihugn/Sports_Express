@@ -3,12 +3,12 @@ import { AuthData } from "../context/UserContext";
 import { nav } from "./navigation";
 
 export const RenderRoutes = () => {
-  const { user } = AuthData();
+  const { user, token } = AuthData();
 
   return (
     <Routes>
       {nav.map((r, i) => {
-        if (r.isPrivate && user.isAuthenticated) {
+        if (r.isPrivate && (user.isAuthenticated || token)) {
           return <Route key={i} path={r.path} element={r.element} />;
         } else if (!r.isPrivate) {
           return <Route key={i} path={r.path} element={r.element} />;
@@ -50,7 +50,7 @@ export const RenderMenu = () => {
             {nav.map((r, i) => {
               if (!r.isPrivate && r.isMenu) {
                 return <MenuItem key={i} r={r} />;
-              } else if (user.isAuthenticated && r.isMenu) {
+              } else if ((user.isAuthenticated || token) && r.isMenu) {
                 return <MenuItem key={i} r={r} />;
               } else return false;
             })}
