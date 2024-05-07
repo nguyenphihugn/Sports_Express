@@ -1,6 +1,5 @@
 import React from "react";
 import { UserProvider } from "./context/UserContext";
-
 import { BrowserRouter } from "react-router-dom";
 
 const App = () => {

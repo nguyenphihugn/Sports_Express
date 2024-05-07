@@ -1,0 +1,11 @@
+// @import "../node_modules/bootswatch/dist/cerulean/_bootswatch.scss";
+@import url("https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap");
+
+// $h1-font-size: 3rem;
+// $info: #6610f2;
+// $theme-colors: (
+//   "primary": #a824dc,
+// );
+@import "~bootswatch/dist/cerulean/variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/cerulean/bootswatch";

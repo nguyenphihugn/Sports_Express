@@ -1,39 +1,32 @@
-import React, { useContext, useState } from "react";
-
-import { UserContext } from "../context/UserContext";
+import React, { useState, useReducer } from "react";
 import ErrorMessage from "./ErrorMessage";
+import { useNavigate } from "react-router-dom";
+import { AuthData } from "../context/UserContext";
 
 const SignUp = () => {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { signup } = AuthData();
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useReducer(
+    (formData, newItem) => {
+      return { ...formData, ...newItem };
+    },
+    { username: "", email: "", password: "" }
+  );
   const [errorMessage, setErrorMessage] = useState("");
-  const [, setToken] = useContext(UserContext);
 
   const submitSignUp = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-        email: email,
-      }),
-    };
-    const response = await fetch("/api/users", requestOptions);
-    const data = await response.json();
-
-    if (!response.ok) {
-      setErrorMessage(data.detail);
-    } else {
-      setToken(data.access_token);
+    try {
+      await signup(formData.username, formData.password, formData.email);
+      navigate("/");
+    } catch (error) {
+      setErrorMessage(error);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
+    if (formData.password === confirmPassword) {
       submitSignUp();
     } else {
       setErrorMessage(
@@ -58,8 +51,8 @@ const SignUp = () => {
                     className="form-control"
                     type="email"
                     placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={formData.email}
+                    onChange={(e) => setFormData({ email: e.target.value })}
                     required
                   />
                   <label>Email address</label>
@@ -69,9 +62,9 @@ const SignUp = () => {
                     className="form-control "
                     type="text"
                     placeholder="Enter your username"
-                    value={username}
+                    value={formData.username}
                     maxLength="16"
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => setFormData({ username: e.target.value })}
                     required
                   />
                   <label>Username</label>
@@ -83,8 +76,8 @@ const SignUp = () => {
                     placeholder="Enter your password"
                     minLength="3"
                     maxLength="32"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formData.password}
+                    onChange={(e) => setFormData({ password: e.target.value })}
                     required
                   />
                   <label>Password</label>

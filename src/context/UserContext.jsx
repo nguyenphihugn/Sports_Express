@@ -50,13 +50,34 @@ export const UserProvider = () => {
     }
   };
 
+  const signup = async (username, password, email) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        email: email,
+      }),
+    };
+    const response = await fetch("/api/users", requestOptions);
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.log(response);
+    } else {
+      setToken(data.access_token);
+      setUser({ name: username, isAuthenticated: true });
+    }
+  };
+
   const logout = () => {
     setUser({ ...user, isAuthenticated: false });
     setToken(null);
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout, token }}>
+    <UserContext.Provider value={{ user, login, logout, signup, token }}>
       <RenderMenu />
       <RenderRoutes />
     </UserContext.Provider>
