@@ -18,7 +18,7 @@ const SignUp = () => {
   const submitSignUp = async () => {
     try {
       await signup(formData.username, formData.password, formData.email);
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       setErrorMessage(error);
     }

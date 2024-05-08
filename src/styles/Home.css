@@ -47,6 +47,14 @@
   z-index: 99;
 }
 
+.hover-4-mark {
+  position: absolute;
+  bottom: 120px;
+  right: -75px;
+  padding: 3rem;
+  z-index: 99;
+}
+
 .hover-4-description {
   position: absolute;
   top: 2rem;

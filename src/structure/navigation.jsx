@@ -1,15 +1,19 @@
 import { Account } from "../components/Account";
 import { Home } from "../components/Home";
+// import { Navigate } from "react-router-dom";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
 
+// const token = localStorage.getItem("UserToken");
+
 export const nav = [
   {
-    path: "/",
+    path: "/home",
     name: "Home",
+    // element: token ? <Navigate to="/" /> : <Home />,
     element: <Home />,
     isMenu: true,
-    isPrivate: false,
+    isPrivate: true,
   },
   {
     path: "/account",
@@ -19,7 +23,7 @@ export const nav = [
     isPrivate: true,
   },
   {
-    path: "/signin",
+    path: "/",
     name: "Signin",
     element: <SignIn />,
     isMenu: false,

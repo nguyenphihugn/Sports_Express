@@ -4,12 +4,13 @@ import moment from "moment";
 import { CirclesWithBar } from "react-loader-spinner";
 import axios from "axios";
 import "../styles/Home.css";
+// import Heart from "react-animated-heart";
 
 export function Home() {
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [index, setIndex] = useState(1);
-
+  // const [isClick, setClick] = useState(false);
   useEffect(() => {
     axios
       .get("/api/presign-urls?skip=0&limit=9")
@@ -60,6 +61,12 @@ export function Home() {
                 <div className="hover hover-4 text-white rounded">
                   <img src={item.url} alt={`Pic ${index + 1}`} />
                   <div className="hover-overlay d-flex align-items-center justify-content-center">
+                    {/* <div className="hover-4-mark">
+                      <Heart
+                        isClick={isClick}
+                        onClick={() => setClick(!isClick)}
+                      />
+                    </div> */}
                     <div className="hover-4-content">
                       <h3 className="hover-4-title text-white mb-0">
                         {item.title}

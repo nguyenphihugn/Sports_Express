@@ -1,26 +1,55 @@
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, Navigate } from "react-router-dom";
 import { AuthData } from "../context/UserContext";
 import { nav } from "./navigation";
+import { useState, useEffect } from "react";
 
 export const RenderRoutes = () => {
-  const { user, token } = AuthData();
-
+  const { user } = AuthData();
+  const [token2, setToken2] = useState(localStorage.getItem("UserToken"));
+  // console.log(token2);
+  useEffect(() => {
+    setToken2(localStorage.getItem("UserToken"));
+  }, []);
+  const requireAuth = (nextState, replace, next) => {
+    if (!token2) {
+      replace({
+        pathname: "/",
+        state: { nextPathname: nextState.location.pathname },
+      }).next();
+    }
+    next();
+  };
   return (
     <Routes>
       {nav.map((r, i) => {
-        if (r.isPrivate && (user.isAuthenticated || token)) {
-          return <Route key={i} path={r.path} element={r.element} />;
+        if (r.isPrivate && (user.isAuthenticated || token2 !== "")) {
+          return (
+            <Route
+              key={i}
+              path={r.path}
+              element={r.element}
+              onEnter={requireAuth}
+            />
+          );
         } else if (!r.isPrivate) {
-          return <Route key={i} path={r.path} element={r.element} />;
+          return (
+            <Route
+              key={i}
+              path={r.path}
+              element={r.element}
+              onEnter={requireAuth}
+            />
+          );
         } else return false;
       })}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };
 
 export const RenderMenu = () => {
-  const { user, logout, token } = AuthData();
-
+  const { user, logout } = AuthData();
+  const token2 = localStorage.getItem("UserToken");
   const MenuItem = ({ r }) => {
     return (
       <div className="nav-item">
@@ -50,12 +79,12 @@ export const RenderMenu = () => {
             {nav.map((r, i) => {
               if (!r.isPrivate && r.isMenu) {
                 return <MenuItem key={i} r={r} />;
-              } else if ((user.isAuthenticated || token) && r.isMenu) {
+              } else if ((user.isAuthenticated || token2 !== "") && r.isMenu) {
                 return <MenuItem key={i} r={r} />;
               } else return false;
             })}
 
-            {user.isAuthenticated || token ? (
+            {user.isAuthenticated || token2 !== "" ? (
               <div className="nav-item">
                 <Link className="nav-link" to={"#"} onClick={logout}>
                   Log out
@@ -74,7 +103,7 @@ export const RenderMenu = () => {
                   Account
                 </div>
                 <div className="dropdown-menu">
-                  <Link className="dropdown-item" to={"signin"}>
+                  <Link className="dropdown-item" to={"/"}>
                     Sign In
                   </Link>
                   <Link className="dropdown-item" to={"signup"}>
@@ -97,7 +126,7 @@ export const RenderMenu = () => {
               Search
             </button>
           </form>
-          {user.isAuthenticated || token ? (
+          {user.isAuthenticated || token2 !== "" ? (
             <div className="d-flex flex-column align-items-center">
               <img
                 className="img-fluid rounded-circle"

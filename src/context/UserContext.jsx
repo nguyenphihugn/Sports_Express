@@ -1,34 +1,17 @@
-import React, { createContext, useEffect, useState, useContext } from "react";
+import React, { createContext, useState, useContext } from "react";
 import { RenderMenu, RenderRoutes } from "../structure/RenderNavigation";
+import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
 
 export const AuthData = () => useContext(UserContext);
 
 export const UserProvider = () => {
-  const [token, setToken] = useState(localStorage.getItem("UserToken"));
+  const token2 = localStorage.getItem("UserToken");
+  const navigate = useNavigate();
+  // const history = useHistory();
 
   const [user, setUser] = useState({ name: "", isAuthenticated: false });
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const requestOptions = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      };
-
-      const response = await fetch("/api/users/me", requestOptions);
-
-      if (!response.ok) {
-        setToken(null);
-      }
-      localStorage.setItem("UserToken", token);
-    };
-    fetchUser();
-  }, [token]);
 
   const login = async (username, password) => {
     const requestOptions = {
@@ -45,7 +28,7 @@ export const UserProvider = () => {
     if (!response.ok) {
       console.log(response);
     } else {
-      setToken(data.access_token);
+      localStorage.setItem("UserToken", data.access_token);
       setUser({ name: username, isAuthenticated: true });
     }
   };
@@ -66,18 +49,19 @@ export const UserProvider = () => {
     if (!response.ok) {
       console.log(response);
     } else {
-      setToken(data.access_token);
+      localStorage.setItem("UserToken", data.access_token);
       setUser({ name: username, isAuthenticated: true });
     }
   };
 
   const logout = () => {
     setUser({ ...user, isAuthenticated: false });
-    setToken(null);
+    localStorage.setItem("UserToken", "");
+    navigate("/", { replace: true });
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout, signup, token }}>
+    <UserContext.Provider value={{ user, login, logout, signup, token2 }}>
       <RenderMenu />
       <RenderRoutes />
     </UserContext.Provider>
