@@ -3,6 +3,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import moment from "moment";
 import { CirclesWithBar } from "react-loader-spinner";
 import axios from "axios";
+import FullImage from "./FullImage";
 import "../styles/Home.css";
 // import Heart from "react-animated-heart";
 
@@ -10,7 +11,8 @@ export function Home() {
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [index, setIndex] = useState(1);
-  // const [isClick, setClick] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
   useEffect(() => {
     axios
       .get("/api/presign-urls?skip=0&limit=9")
@@ -57,16 +59,20 @@ export function Home() {
         <div className="row">
           {items &&
             items.map((item, index) => (
-              <div className="col-md-4 mb-4" key={index}>
+              <div
+                className="col-md-4 mb-4"
+                key={index}
+                onClick={() => setSelectedImage(item)}
+              >
                 <div className="hover hover-4 text-white rounded">
                   <img src={item.url} alt={`Pic ${index + 1}`} />
                   <div className="hover-overlay d-flex align-items-center justify-content-center">
                     {/* <div className="hover-4-mark">
-                      <Heart
-                        isClick={isClick}
-                        onClick={() => setClick(!isClick)}
-                      />
-                    </div> */}
+                        <Heart
+                          isClick={isClick}
+                          onClick={() => setClick(!isClick)}
+                        />
+                      </div> */}
                     <div className="hover-4-content">
                       <h3 className="hover-4-title text-white mb-0">
                         {item.title}
@@ -78,8 +84,8 @@ export function Home() {
                         <br />
                         Created By: {item.owner.username}
                         <br />
-                        {item.content.length > 50
-                          ? item.content.substring(0, 50) + "..."
+                        {item.content.length > 20
+                          ? item.content.substring(0, 20) + "..."
                           : item.content}
                       </p>
                     </div>
@@ -89,6 +95,15 @@ export function Home() {
             ))}
         </div>
       </div>
+      {selectedImage && (
+        <FullImage
+          image={selectedImage}
+          content={selectedImage.content}
+          createdAt={selectedImage.create_at}
+          createdBy={selectedImage.owner}
+          onClose={() => setSelectedImage(null)}
+        />
+      )}
     </InfiniteScroll>
   );
 }

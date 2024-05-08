@@ -1,11 +1,11 @@
 import { Account } from "../components/Account";
 import { Home } from "../components/Home";
-// import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
 
-// const token = localStorage.getItem("UserToken");
-
+const token = localStorage.getItem("UserToken");
+console.log(token);
 export const nav = [
   {
     path: "/home",
@@ -25,14 +25,16 @@ export const nav = [
   {
     path: "/",
     name: "Signin",
-    element: <SignIn />,
+    // element: <SignIn />,
+    element: token ? <Navigate to="/home" /> : <SignIn />,
     isMenu: false,
     isPrivate: false,
   },
   {
     path: "/signup",
     name: "SignUp",
-    element: <SignUp />,
+    // element: <SignUp />,
+    element: token ? <Navigate to="/home" /> : <SignUp />,
     isMenu: false,
     isPrivate: false,
   },

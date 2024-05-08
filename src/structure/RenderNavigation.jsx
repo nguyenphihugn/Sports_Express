@@ -86,7 +86,7 @@ export const RenderMenu = () => {
 
             {user.isAuthenticated || token2 !== "" ? (
               <div className="nav-item">
-                <Link className="nav-link" to={"#"} onClick={logout}>
+                <Link className="nav-link" to={"/"} onClick={logout}>
                   Log out
                 </Link>
               </div>

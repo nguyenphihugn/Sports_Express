@@ -58,6 +58,7 @@ export const UserProvider = () => {
     setUser({ ...user, isAuthenticated: false });
     localStorage.setItem("UserToken", "");
     navigate("/", { replace: true });
+    window.location.reload();
   };
 
   return (
