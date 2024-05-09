@@ -5,7 +5,7 @@ export const Account = () => {
 
   return (
     <div className="container-fluid mt-5">
-      <h2>Your Account</h2>
+      <h2>Add User</h2>
       <p>Username: {user.name}</p>
     </div>
   );

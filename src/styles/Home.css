@@ -1,3 +1,10 @@
+* {
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
 .hover {
   overflow: hidden;
   position: relative;
@@ -10,7 +17,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 90;
+  z-index: 3;
   transition: all 0.4s;
 }
 
@@ -24,7 +31,7 @@
 
 .hover-content {
   position: relative;
-  z-index: 99;
+  z-index: 4;
 }
 
 .hover-4 img {
@@ -36,7 +43,7 @@
 
 .hover-4 .hover-overlay {
   background: rgba(0, 0, 0, 0.3);
-  z-index: 90;
+  z-index: 3;
 }
 
 .hover-4-title {
@@ -44,7 +51,7 @@
   bottom: 0;
   right: 0;
   padding: 3rem;
-  z-index: 99;
+  z-index: 4;
 }
 
 .hover-4-mark {
@@ -52,7 +59,7 @@
   bottom: 120px;
   right: -75px;
   padding: 3rem;
-  z-index: 99;
+  z-index: 4;
 }
 
 .hover-4-description {
@@ -62,7 +69,7 @@
   text-align: right;
   border-right: 3px solid #fff;
   padding: 0 1rem;
-  z-index: 99;
+  z-index: 4;
   transform: translateX(-1rem);
   opacity: 0;
   transition: all 0.3s;
@@ -90,4 +97,69 @@
 
 .hover-4:hover .hover-overlay {
   background: rgba(0, 0, 0, 0.44);
+}
+
+.datecus {
+  z-index: 1000;
+  position: relative;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  border-bottom: 2px solid #24c3e3;
+  font-size: 18px;
+  font-family: "Roboto Condensed";
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+.datecus.react-datepicker {
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.react-datepicker-popper {
+  z-index: 1000 !important;
+}
+
+.datecus.react-datepicker-overlay {
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.react-datepicker-wrapper {
+  margin-top: 7px;
+}
+
+.datecus:focus {
+  outline: none;
+}
+
+.css-iouw0n-menu {
+  z-index: 1000 !important;
+}
+
+.css-b62m3t-container {
+  width: 200px;
+  padding: 8px;
+  border: none;
+  background-color: transparent;
+  border-bottom: 2px solid #24c3e3;
+  font-size: 14px;
+  font-family: "Roboto Condensed";
+  font-weight: bold;
+  color: #333;
+  text-align: center;
 }

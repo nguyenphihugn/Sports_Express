@@ -1,4 +1,4 @@
-import { Account } from "../components/Account";
+import { Account } from "../components/Add";
 import { Home } from "../components/Home";
 import { Navigate } from "react-router-dom";
 import SignIn from "../components/SignIn";
@@ -16,8 +16,8 @@ export const nav = [
     isPrivate: true,
   },
   {
-    path: "/account",
-    name: "Account",
+    path: "/add",
+    name: "Add Blog",
     element: <Account />,
     isMenu: true,
     isPrivate: true,

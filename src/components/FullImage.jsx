@@ -8,7 +8,7 @@ const FullImage = ({ image, content, createdAt, createdBy, onClose }) => {
       className="modal fade show"
       aria-hidden="true"
       aria-labelledby="exampleModalToggleLabel"
-      tabindex="-1"
+      tabIndex="-1"
       style={{ display: "block" }}
     >
       <div className="modal-dialog modal-dialog-centered">

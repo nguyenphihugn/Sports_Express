@@ -9,7 +9,6 @@ export const AuthData = () => useContext(UserContext);
 export const UserProvider = () => {
   const token2 = localStorage.getItem("UserToken");
   const navigate = useNavigate();
-  // const history = useHistory();
 
   const [user, setUser] = useState({ name: "", isAuthenticated: false });
 
@@ -30,6 +29,7 @@ export const UserProvider = () => {
     } else {
       localStorage.setItem("UserToken", data.access_token);
       setUser({ name: username, isAuthenticated: true });
+      window.location.reload();
     }
   };
 
@@ -51,6 +51,7 @@ export const UserProvider = () => {
     } else {
       localStorage.setItem("UserToken", data.access_token);
       setUser({ name: username, isAuthenticated: true });
+      window.location.reload();
     }
   };
 
