@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import React, { useEffect, useState, useRef } from "react";
+// import InfiniteScroll from "react-infinite-scroll-component";
 import moment from "moment";
 import { CirclesWithBar } from "react-loader-spinner";
 import axios from "axios";
@@ -13,10 +13,17 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export function Home() {
   const [items, setItems] = useState([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [index, setIndex] = useState(1);
+  // const [hasMore, setHasMore] = useState(true);
+  // const [index, setIndex] = useState(1);
+  const hasMore = useRef(true);
+  const index = useRef(0);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDateCal, setStartDateCal] = useState(
+    moment(new Date()).utcOffset(7).format("YYYY-MM-DD HH:mm:ss.SSS")
+  );
+  const startDate = useRef(
+    moment(new Date()).utcOffset(7).format("YYYY-MM-DD HH:mm:ss.SSS")
+  );
   const [selectedOption, setSelectedOption] = useState(null);
 
   const options = [
@@ -27,72 +34,70 @@ export function Home() {
   ];
 
   useEffect(() => {
-    console.log(selectedOption);
-    if (selectedOption !== null) {
-      axios
-        .get("/api/presign-urls", {
+    window.addEventListener("scroll", handleScroll);
+    loadPosts();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loadPosts = async () => {
+    try {
+      if (!hasMore.current) {
+        console.log("No more posts");
+        return;
+      }
+      const newPosts = await fetchMoreData(index);
+      setItems((prevPosts) => [...prevPosts, ...newPosts]);
+      index.current++;
+      hasMore.current = newPosts.length === 9;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchMoreData = async (index) => {
+    try {
+      if (selectedOption !== null) {
+        const res = await axios.get(`/api/presign-urls`, {
           params: {
-            skip: 0,
+            skip: index.current,
             limit: 9,
-            date: startDate,
+            date: startDate.current,
             subject: selectedOption.value,
           },
-        })
-        .then((res) => setItems(res.data.presign_urls))
-        .catch((err) => console.log(err));
-    } else {
-      axios
-        .get("/api/presign-urls", {
+        });
+        console.log(res.data.presign_urls);
+        return res.data.presign_urls;
+      } else {
+        const res = await axios.get(`/api/presign-urls`, {
           params: {
-            skip: 0,
+            skip: index.current,
             limit: 9,
-            date: startDate,
+            date: startDate.current,
           },
-        })
-        .then((res) => setItems(res.data.presign_urls))
-        .catch((err) => console.log(err));
+        });
+        console.log(res.data.presign_urls);
+        return res.data.presign_urls;
+      }
+    } catch (err) {
+      console.log(err);
     }
-  }, [startDate, selectedOption]);
+  };
 
-  const fetchMoreData = () => {
-    if (selectedOption !== null) {
-      axios
-        .get(`/api/presign-urls`, {
-          params: {
-            skip: index,
-            limit: 9,
-            date: startDate,
-            subject: selectedOption.value,
-          },
-        })
-        .then((res) => {
-          setItems((prevItems) => [...prevItems, ...res.data.presign_urls]);
-
-          if (res.data.length < 9) {
-            setHasMore(false);
-          } else {
-            setHasMore(true);
-          }
-        })
-        .catch((err) => console.log(err));
-    } else {
-      axios
-        .get(`/api/presign-urls`, {
-          params: {
-            skip: index,
-            limit: 9,
-            date: startDate,
-          },
-        })
-        .then((res) => {
-          setItems((prevItems) => [...prevItems, ...res.data.presign_urls]);
-
-          res.data.length > 0 ? setHasMore(true) : setHasMore(false);
-        })
-        .catch((err) => console.log(err));
+  const handleScroll = async () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      console.log(startDate);
+      loadPosts();
     }
+  };
 
-    setIndex((prevIndex) => prevIndex + 1);
+  const handleBellClick = async () => {
+    index.current = 0;
+    const newPosts = await fetchMoreData(index);
+    setItems(newPosts);
+    index.current++;
+    hasMore.current = newPosts.length === 9;
   };
 
   return (
@@ -100,8 +105,13 @@ export function Home() {
       <div className="d-flex justify-content-center gap-8">
         <DatePicker
           className="datecus"
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
+          selected={startDateCal}
+          onChange={(date) => {
+            setStartDateCal(date);
+            startDate.current = moment(date)
+              .utcOffset(7)
+              .format("YYYY-MM-DD HH:mm:ss.SSS");
+          }}
         />
         <Select
           options={options}
@@ -118,29 +128,26 @@ export function Home() {
             },
           })}
         />
-      </div>
-      <InfiniteScroll
-        dataLength={items.length}
-        next={fetchMoreData}
-        hasMore={hasMore}
-        onScroll={() => console.log("scroll")}
-        loader={
-          <div className="d-flex justify-content-center mb-4">
-            <CirclesWithBar
-              height="60"
-              width="60"
-              color="#4a94fd"
-              outerCircleColor="#4a94fd"
-              innerCircleColor="#4a94fd"
-              barColor="#4a94fd"
-              ariaLabel="circles-with-bar-loading"
-              wrapperStyle={{}}
-              wrapperClass=""
-              visible={true}
+        <button className="button" onClick={handleBellClick}>
+          <svg
+            className=" bell"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              // stroke-linecap="round"
+              // stroke-width="2"
+              d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"
             />
-          </div>
-        }
-      >
+          </svg>
+        </button>
+      </div>
+      <div>
         <div className="container mt-5">
           <div className="row">
             {items &&
@@ -181,6 +188,22 @@ export function Home() {
               ))}
           </div>
         </div>
+        {hasMore.current ? (
+          <div className="d-flex justify-content-center mb-4">
+            <CirclesWithBar
+              height="60"
+              width="60"
+              color="#4a94fd"
+              outerCircleColor="#4a94fd"
+              innerCircleColor="#4a94fd"
+              barColor="#4a94fd"
+              ariaLabel="circles-with-bar-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+              visible={true}
+            />
+          </div>
+        ) : null}
         {selectedImage && (
           <FullImage
             image={selectedImage}
@@ -190,7 +213,7 @@ export function Home() {
             onClose={() => setSelectedImage(null)}
           />
         )}
-      </InfiniteScroll>
+      </div>
     </div>
   );
 }
