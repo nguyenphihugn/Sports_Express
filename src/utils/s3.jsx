@@ -8,11 +8,6 @@ export const uploadFileToS3 = async (file) => {
   console.log(file, list.key);
 
   try {
-    // const data = await axios.post(`/api/presign-url-upload`, {
-    //   params: {
-    //     key: params.key,
-    //   },
-    // });
     const res = await axios.get(`/api/presign-url-upload`, {
       params: {
         key: list.key,
