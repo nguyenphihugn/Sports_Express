@@ -88,7 +88,6 @@ export function Home() {
 
   const handleScroll = async () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      // console.log(startDate);
       loadPosts();
     }
   };
