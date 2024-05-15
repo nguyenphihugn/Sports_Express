@@ -5,7 +5,7 @@ import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
 
 const token = localStorage.getItem("UserToken");
-console.log(token);
+// console.log(token);
 export const nav = [
   {
     path: "/home",

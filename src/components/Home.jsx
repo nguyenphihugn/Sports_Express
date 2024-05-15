@@ -10,6 +10,7 @@ import Select from "react-select";
 
 import "react-datepicker/dist/react-datepicker.css";
 // import Heart from "react-animated-heart";
+import HeartIconComponent from "./HeartIcon";
 
 export function Home() {
   const [items, setItems] = useState([]);
@@ -155,18 +156,24 @@ export function Home() {
                 <div
                   className="col-md-4 mb-4"
                   key={index}
-                  onClick={() => setSelectedImage(item)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImage(item);
+                  }}
                 >
                   <div className="hover hover-4 text-white rounded">
                     <img src={item.url} alt={`Pic ${index + 1}`} />
                     <div className="hover-overlay d-flex align-items-center justify-content-center">
-                      <div className="hover-4-mark">
-                        {/* <Heart
-                          $isclick={isSelect}
-                          $onclick={() => setSelect(!isSelect)}
-                          styles={{ zIndex: 1000 }}
-                        /> */}
-                      </div>
+                      {/* <div className="hover-4-mark">
+                        <Heart
+                          isClick={isSelect}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelect(!isSelect);
+                          }}
+                        />                     
+                      </div> */}
+                      <HeartIconComponent item={item} />
                       <div className="hover-4-content">
                         <h3 className="hover-4-title text-white mb-0">
                           {item.title}

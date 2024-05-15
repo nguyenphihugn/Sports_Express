@@ -59,7 +59,7 @@
   bottom: 120px;
   right: -75px;
   padding: 3rem;
-  z-index: 4;
+  z-index: 1000;
 }
 
 .hover-4-description {
