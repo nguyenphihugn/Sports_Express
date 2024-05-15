@@ -13,7 +13,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export function Home() {
   const [items, setItems] = useState([]);
-  // const [hasMore, setHasMore] = useState(true);
+  // const [isSelect, setSelect] = useState(true);
   // const [index, setIndex] = useState(1);
   const hasMore = useRef(true);
   const index = useRef(0);
@@ -67,7 +67,7 @@ export function Home() {
             subject: selectedOption.value,
           },
         });
-        console.log(res.data.presign_urls);
+        // console.log(res.data.presign_urls);
         return res.data.presign_urls;
       } else {
         const res = await axios.get(`/api/presign-urls`, {
@@ -77,7 +77,7 @@ export function Home() {
             date: startDate.current,
           },
         });
-        console.log(res.data.presign_urls);
+        // console.log(res.data.presign_urls);
         return res.data.presign_urls;
       }
     } catch (err) {
@@ -87,7 +87,7 @@ export function Home() {
 
   const handleScroll = async () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      console.log(startDate);
+      // console.log(startDate);
       loadPosts();
     }
   };
@@ -160,19 +160,20 @@ export function Home() {
                   <div className="hover hover-4 text-white rounded">
                     <img src={item.url} alt={`Pic ${index + 1}`} />
                     <div className="hover-overlay d-flex align-items-center justify-content-center">
-                      {/* <div className="hover-4-mark">
-                        <Heart
-                        isClick={isClick}
-                        onClick={() => setClick(!isClick)}
-                        />
-                      </div> */}
+                      <div className="hover-4-mark">
+                        {/* <Heart
+                          $isclick={isSelect}
+                          $onclick={() => setSelect(!isSelect)}
+                          styles={{ zIndex: 1000 }}
+                        /> */}
+                      </div>
                       <div className="hover-4-content">
                         <h3 className="hover-4-title text-white mb-0">
                           {item.title}
                         </h3>
                         <p className="hover-4-description text-uppercase mb-0 small">
                           {moment(item.create_at).format(
-                            "MMMM Do YYYY, h:mm:ss a"
+                            "MMMM Do YYYY, h:mm a"
                           )}
                           <br />
                           Created By: {item.owner.username}

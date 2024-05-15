@@ -1,0 +1,17 @@
+@media (max-width: 600px) {
+  .margin {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .text-big {
+    width: 90vw;
+  }
+
+  .mt-add {
+    margin-top: 6rem !important;
+  }
+}
