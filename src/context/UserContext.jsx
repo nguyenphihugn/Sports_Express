@@ -9,7 +9,7 @@ export const AuthData = () => useContext(UserContext);
 export const UserProvider = () => {
   const token2 = localStorage.getItem("UserToken");
   const navigate = useNavigate();
-
+  const [errorMes, setErrorMes] = useState("");
   const [user, setUser] = useState({ name: "", isAuthenticated: false });
 
   const login = async (username, password) => {
@@ -26,6 +26,7 @@ export const UserProvider = () => {
 
     if (!response.ok) {
       console.log(response);
+      setErrorMes("wrong");
     } else {
       localStorage.setItem("UserToken", data.access_token);
       setUser({ name: username, isAuthenticated: true });
@@ -63,7 +64,16 @@ export const UserProvider = () => {
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout, signup, token2 }}>
+    <UserContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        signup,
+        token2,
+        errorMes,
+      }}
+    >
       <RenderMenu />
       <RenderRoutes />
     </UserContext.Provider>

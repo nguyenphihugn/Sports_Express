@@ -1,4 +1,4 @@
-import { Link, Route, Routes, Navigate } from "react-router-dom";
+import { Link, Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import { AuthData } from "../context/UserContext";
 import { nav } from "./navigation";
 import { useState, useEffect } from "react";
@@ -7,9 +7,16 @@ export const RenderRoutes = () => {
   const { user } = AuthData();
   const [token2, setToken2] = useState(localStorage.getItem("UserToken"));
   // console.log(token2);
+  const navigate = useNavigate();
   useEffect(() => {
+    if (token2 !== "" && token2 !== null) {
+      navigate("/home");
+    } else {
+      navigate("/");
+    }
     setToken2(localStorage.getItem("UserToken"));
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token2]);
   const requireAuth = (nextState, replace, next) => {
     if (!token2) {
       replace({
@@ -22,7 +29,10 @@ export const RenderRoutes = () => {
   return (
     <Routes>
       {nav.map((r, i) => {
-        if (r.isPrivate && (user.isAuthenticated || token2 !== "")) {
+        if (
+          r.isPrivate &&
+          (user.isAuthenticated || (token2 !== "" && token2 !== null))
+        ) {
           return (
             <Route
               key={i}
@@ -79,12 +89,15 @@ export const RenderMenu = () => {
             {nav.map((r, i) => {
               if (!r.isPrivate && r.isMenu) {
                 return <MenuItem key={i} r={r} />;
-              } else if ((user.isAuthenticated || token2 !== "") && r.isMenu) {
+              } else if (
+                (user.isAuthenticated || (token2 !== "" && token2 !== null)) &&
+                r.isMenu
+              ) {
                 return <MenuItem key={i} r={r} />;
               } else return false;
             })}
 
-            {user.isAuthenticated || token2 !== "" ? (
+            {user.isAuthenticated || (token2 !== "" && token2 !== null) ? (
               <div className="nav-item">
                 <Link className="nav-link" to={"/"} onClick={logout}>
                   Log out
@@ -113,7 +126,7 @@ export const RenderMenu = () => {
               </div>
             )}
           </div>
-          {user.isAuthenticated || token2 !== "" ? (
+          {user.isAuthenticated || (token2 !== "" && token2 !== null) ? (
             <div className="d-flex flex-column align-items-center">
               <img
                 className="img-fluid rounded-circle"

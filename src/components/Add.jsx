@@ -55,6 +55,7 @@ export const Account = () => {
       // Redirect to blog post list or show success message
     } catch (error) {
       setError(error.message);
+      navigate("/login");
     }
   };
 

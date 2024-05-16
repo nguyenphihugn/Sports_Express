@@ -1,11 +1,11 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import ErrorMessage from "./ErrorMessage";
 import { useNavigate } from "react-router-dom";
 import { AuthData } from "../context/UserContext";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { login } = AuthData();
+  const { login, errorMes } = AuthData();
   const [formData, setFormData] = useReducer(
     (formData, newItem) => {
       return { ...formData, ...newItem };
@@ -13,6 +13,12 @@ const SignIn = () => {
     { username: "", password: "" }
   );
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    // console.log(errorMes);
+    if (errorMes === "wrong")
+      setErrorMessage("Wrong Username or Password, Please try again!");
+  }, [errorMes]);
 
   const submitSignIn = async () => {
     try {
@@ -25,7 +31,11 @@ const SignIn = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    submitSignIn();
+    try {
+      submitSignIn();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
