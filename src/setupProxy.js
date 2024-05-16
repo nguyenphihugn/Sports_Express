@@ -4,9 +4,11 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: process.env.REACT_APP_API_ENDPOINT,
+      target: "http://13.215.209.132:8000/",
       // target: "http://localhost:8000",
       changeOrigin: true,
     })
   );
 };
+
+
