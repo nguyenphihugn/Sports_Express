@@ -37,11 +37,11 @@ export const Account = () => {
     const url = localStorage.getItem("ImageURL");
     if (!selectedOption || !content || !url) {
       setError("Please fill in all fields");
-      console.log(selectedOption, content, url, "Dieu Kien");
+      // console.log(selectedOption, content, url, "Dieu Kien");
       return;
     }
     const title = selectedOption.value;
-    console.log(title, content, url);
+    // console.log(title, content, url);
     try {
       const response = await axios.post(
         "/api/blogs",

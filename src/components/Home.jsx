@@ -58,7 +58,7 @@ export function Home() {
 
   const loadPosts = async () => {
     if (!hasMore.current) {
-      console.log("No more posts");
+      // console.log("No more posts");
       return;
     }
     try {
