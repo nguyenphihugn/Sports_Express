@@ -81,6 +81,49 @@
   }
 }
 
+@media (min-width: 770px) and (max-width: 990px) {
+  .hover-4-description {
+    width: 50%;
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .small,
+  small {
+    font-size: 0.6rem;
+  }
+
+  h3,
+  .h3 {
+    font-size: 1rem !important;
+  }
+
+  .hover-4-title {
+    padding: 0.5rem;
+  }
+
+  .hover-4-mark {
+    bottom: 4px;
+  }
+
+  .go4268192979 {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (min-width: 520px) and (max-width: 769px) {
+  .hover-4-mark {
+    bottom: 180px;
+  }
+}
+
+@media (min-width: 300px) and (max-width: 412px) {
+  .hover-4-mark {
+    bottom: 80px;
+  }
+}
+
 .hover-4:hover img {
   width: 100%;
 }

@@ -35,60 +35,58 @@ export function Home() {
   ];
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    loadPosts();
+    let isLoading = false;
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const threshold = 200; // adjust this value to your liking
+      if (
+        scrollPosition >= document.body.offsetHeight - threshold &&
+        !isLoading
+      ) {
+        isLoading = true;
+        loadPosts().finally(() => {
+          isLoading = false;
+        });
+      }
+      requestAnimationFrame(handleScroll);
+    };
+    requestAnimationFrame(handleScroll);
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => cancelAnimationFrame(handleScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadPosts = async () => {
+    if (!hasMore.current) {
+      console.log("No more posts");
+      return;
+    }
     try {
-      if (!hasMore.current) {
-        console.log("No more posts");
-        return;
-      }
-      const newPosts = await fetchMoreData(index);
+      const newPosts = await fetchMoreData(index.current);
       setItems((prevPosts) => [...prevPosts, ...newPosts]);
       index.current++;
       hasMore.current = newPosts.length === 9;
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      // Consider displaying an error message to the user or retrying the API call
     }
   };
 
   const fetchMoreData = async (index) => {
     try {
+      const params = {
+        skip: index,
+        limit: 9,
+        date: startDate.current,
+      };
       if (selectedOption !== null) {
-        const res = await axios.get(`/api/presign-urls`, {
-          params: {
-            skip: index.current,
-            limit: 9,
-            date: startDate.current,
-            subject: selectedOption.value,
-          },
-        });
-        // console.log(res.data.presign_urls);
-        return res.data.presign_urls;
-      } else {
-        const res = await axios.get(`/api/presign-urls`, {
-          params: {
-            skip: index.current,
-            limit: 9,
-            date: startDate.current,
-          },
-        });
-        // console.log(res.data.presign_urls);
-        return res.data.presign_urls;
+        params.subject = selectedOption.value;
       }
+      const res = await axios.get(`/api/presign-urls`, { params });
+      return res.data.presign_urls;
     } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleScroll = async () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      loadPosts();
+      console.error(err);
+      // Consider displaying an error message to the user or retrying the API call
     }
   };
 
