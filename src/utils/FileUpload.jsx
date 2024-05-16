@@ -83,14 +83,11 @@ const FileUpload = () => {
     };
 
     try {
-      const response = await axios.get(
-        `http://13.215.209.132:8000/presign-url-upload`,
-        {
-          params: {
-            key: list.key,
-          },
-        }
-      );
+      const response = await axios.get(`/api/presign-url-upload`, {
+        params: {
+          key: list.key,
+        },
+      });
       setUploadStatus("uploading");
       await axios.put(response.data.url, selectedFile, config);
       localStorage.setItem("ImageURL", list.key);

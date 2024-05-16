@@ -21,10 +21,7 @@ export const UserProvider = () => {
       ),
     };
 
-    const response = await fetch(
-      "http://13.215.209.132:8000/token",
-      requestOptions
-    );
+    const response = await fetch("/api/token", requestOptions);
     const data = await response.json();
 
     if (!response.ok) {
@@ -46,10 +43,7 @@ export const UserProvider = () => {
         email: email,
       }),
     };
-    const response = await fetch(
-      "http://13.215.209.132:8000/users",
-      requestOptions
-    );
+    const response = await fetch("/api/users", requestOptions);
     const data = await response.json();
 
     if (!response.ok) {
