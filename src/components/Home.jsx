@@ -60,7 +60,7 @@ export function Home() {
   const fetchMoreData = async (index) => {
     try {
       if (selectedOption !== null) {
-        const res = await axios.get(`/api/presign-urls`, {
+        const res = await axios.get(`http://13.215.209.132:8000/presign-urls`, {
           params: {
             skip: index.current,
             limit: 9,
@@ -71,7 +71,7 @@ export function Home() {
         // console.log(res.data.presign_urls);
         return res.data.presign_urls;
       } else {
-        const res = await axios.get(`/api/presign-urls`, {
+        const res = await axios.get(`http://13.215.209.132:8000/presign-urls`, {
           params: {
             skip: index.current,
             limit: 9,
