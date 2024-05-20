@@ -10,7 +10,7 @@ export const RenderRoutes = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (token2 !== "" && token2 !== null) {
-      navigate("/home");
+      // navigate("/home");
     } else {
       navigate("/");
     }

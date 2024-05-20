@@ -45,9 +45,13 @@ export function Home() {
         !isLoading
       ) {
         isLoading = true;
-        loadPosts().finally(() => {
-          isLoading = false;
-        });
+        if (hasMore.current === false) {
+          return;
+        } else {
+          loadPosts().finally(() => {
+            isLoading = false;
+          });
+        }
       }
       requestAnimationFrame(handleScroll);
     };
@@ -58,10 +62,6 @@ export function Home() {
   }, []);
 
   const loadPosts = async () => {
-    if (!hasMore.current) {
-      // console.log("No more posts");
-      return;
-    }
     try {
       const newPosts = await fetchMoreData(index.current);
       setItems((prevPosts) => [...prevPosts, ...newPosts]);
@@ -173,15 +173,6 @@ export function Home() {
                   <div className="hover hover-4 text-white rounded">
                     <img src={item.url} alt={`Pic ${index + 1}`} />
                     <div className="hover-overlay d-flex align-items-center justify-content-center">
-                      {/* <div className="hover-4-mark">
-                        <Heart
-                          isClick={isSelect}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelect(!isSelect);
-                          }}
-                        />                     
-                      </div> */}
                       <HeartIconComponent item={item} />
                       <div className="hover-4-content">
                         <h3 className="hover-4-title text-white mb-0">
@@ -210,10 +201,10 @@ export function Home() {
             <CirclesWithBar
               height="60"
               width="60"
-              color="#4a94fd"
-              outerCircleColor="#4a94fd"
-              innerCircleColor="#4a94fd"
-              barColor="#4a94fd"
+              color="#2683b9"
+              outerCircleColor="#24c3e3"
+              innerCircleColor="#2683b9"
+              barColor="#24c3e3"
               ariaLabel="circles-with-bar-loading"
               wrapperStyle={{}}
               wrapperClass=""
