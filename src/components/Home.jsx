@@ -16,6 +16,7 @@ export function Home() {
   const [items, setItems] = useState([]);
   // const [isSelect, setSelect] = useState(true);
   // const [index, setIndex] = useState(1);
+  const [isError, setError] = useState(null);
   const hasMore = useRef(true);
   const index = useRef(0);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -38,7 +39,7 @@ export function Home() {
     let isLoading = false;
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight;
-      const threshold = 200; // adjust this value to your liking
+      const threshold = 200;
       if (
         scrollPosition >= document.body.offsetHeight - threshold &&
         !isLoading
@@ -65,6 +66,7 @@ export function Home() {
       const newPosts = await fetchMoreData(index.current);
       setItems((prevPosts) => [...prevPosts, ...newPosts]);
       index.current++;
+
       hasMore.current = newPosts.length === 9;
     } catch (err) {
       console.error(err);
@@ -83,6 +85,11 @@ export function Home() {
         params.subject = selectedOption.value;
       }
       const res = await axios.get(`/api/presign-urls`, { params });
+      if (res.data.presign_urls.length === 0) {
+        setError("There is no Blog!");
+      } else setError(null);
+      // console.log(res.data.presign_urls.length);
+      // console.log(isError);
       return res.data.presign_urls;
     } catch (err) {
       console.error(err);
@@ -92,7 +99,7 @@ export function Home() {
 
   const handleBellClick = async () => {
     index.current = 0;
-    const newPosts = await fetchMoreData(index);
+    const newPosts = await fetchMoreData(index.current);
     setItems(newPosts);
     index.current++;
     hasMore.current = newPosts.length === 9;
@@ -128,7 +135,7 @@ export function Home() {
         />
         <button className="button" onClick={handleBellClick}>
           <svg
-            className=" bell"
+            className="bell"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -148,6 +155,11 @@ export function Home() {
       <div>
         <div className="container mt-5">
           <div className="row">
+            {isError ? (
+              <h4 className="d-flex align-items-center justify-content-center mb-0">
+                {isError}
+              </h4>
+            ) : null}
             {items &&
               items.map((item, index) => (
                 <div

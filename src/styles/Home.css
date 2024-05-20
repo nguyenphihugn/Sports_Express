@@ -118,9 +118,15 @@
   }
 }
 
-@media (min-width: 300px) and (max-width: 412px) {
+@media (min-width: 358px) and (max-width: 412px) {
   .hover-4-mark {
-    bottom: 80px;
+    bottom: 90px;
+  }
+}
+
+@media (min-width: 300px) and (max-width: 357px) {
+  .hover-4-mark {
+    bottom: 65px;
   }
 }
 
@@ -215,7 +221,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(44, 44, 44);
+  background-color: #2683b9;
   border-radius: 50%;
   cursor: pointer;
   transition-duration: 0.3s;
@@ -228,7 +234,7 @@
 }
 
 .button:hover {
-  background-color: rgb(56, 56, 56);
+  background-color: #24c3e3;
 }
 
 .button:hover .bell {
@@ -304,46 +310,3 @@
 .input-wrapper input:focus {
   outline-color: #24c3e3;
 }
-
-/* .custum-file-upload {
-  height: 300px;
-  width: 500px;
-  display: flex;
-  flex-direction: column;
-  align-items: space-between;
-  gap: 20px;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  border: 2px dashed #e8e8e8;
-  background-color: #2d5274;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0px 48px 35px -48px #e8e8e8;
-}
-
-.custum-file-upload .icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.custum-file-upload .icon svg {
-  height: 80px;
-  fill: #e8e8e8;
-}
-
-.custum-file-upload .text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.custum-file-upload .text span {
-  font-weight: 400;
-  color: #e8e8e8;
-}
-
-.custum-file-upload input {
-  display: none;
-} */
