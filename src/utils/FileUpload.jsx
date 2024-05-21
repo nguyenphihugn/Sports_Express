@@ -105,6 +105,7 @@ const FileUpload = () => {
         type="file"
         onChange={handleFileChange}
         style={{ display: "none" }}
+        accept="image/png, image/jpeg, image/jpg"
       />
 
       {/* Button to trigger the file input dialog */}
